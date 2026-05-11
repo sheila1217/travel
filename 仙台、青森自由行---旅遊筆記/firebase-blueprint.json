@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "ItineraryItem": {
+      "title": "Itinerary Item",
+      "description": "An item in the travel itinerary.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "day": { "type": "number" },
+        "type": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "arrivalTime": { "type": "string" },
+        "leaveTime": { "type": "string" },
+        "time": { "type": "string" },
+        "duration": { "type": "number" },
+        "title": { "type": "string" },
+        "address": { "type": "string" },
+        "mapCode": { "type": "string" },
+        "note": { "type": "string" },
+        "cost": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "paymentStatus": { "type": "string" },
+        "isNTD": { "type": "boolean" },
+        "bookingPerson": { "type": "string" },
+        "roomType": { "type": "string" },
+        "bookingPlatform": { "type": "string" },
+        "fromAirport": { "type": "string" },
+        "toAirport": { "type": "string" },
+        "flightNo": { "type": "string" },
+        "transportType": { "type": "string" },
+        "route": { "type": "string" },
+        "segments": { "type": "array" }
+      }
+    },
+    "ShoppingItem": {
+      "title": "Shopping Item",
+      "description": "An item in the shopping list.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "normalPrice": { "type": "number" },
+        "taiwanPrice": { "type": "number" },
+        "actualPrice": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "image": { "type": "string" },
+        "status": { "type": "string" },
+        "includeInBudget": { "type": "boolean" },
+        "note": { "type": "string" }
+      }
+    },
+    "PreparationItem": {
+      "title": "Preparation Item",
+      "description": "A preparation checklist item.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "done": { "type": "boolean" }
+      }
+    },
+    "StrategyItem": {
+      "title": "Strategy Item",
+      "description": "A travel strategy or tip.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "note": { "type": "string" },
+        "links": { "type": "array" }
+      }
+    },
+    "Settings": {
+      "title": "Trip Settings",
+      "description": "Global settings for the trip.",
+      "type": "object",
+      "properties": {
+        "exchangeRate": { "type": "number" },
+        "totalBudgetNTD": { "type": "number" },
+        "startDate": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/itinerary/{id}": { "schema": "ItineraryItem", "description": "Itinerary items collection" },
+    "/shopping/{id}": { "schema": "ShoppingItem", "description": "Shopping items collection" },
+    "/preparations/{id}": { "schema": "PreparationItem", "description": "Preparation checklist collection" },
+    "/strategies/{id}": { "schema": "StrategyItem", "description": "Travel strategies collection" },
+    "/settings/global": { "schema": "Settings", "description": "Global trip settings" }
+  }
+}

@@ -1,0 +1,99 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation Blueprints
+    function isValidItineraryItem(data) {
+      return data.keys().hasAll(['id', 'day', 'type']) &&
+             data.id is string &&
+             data.day is number &&
+             data.type is string &&
+             data.id.size() <= 128;
+    }
+
+    function isValidShoppingItem(data) {
+      return data.keys().hasAll(['id', 'title', 'status']) &&
+             data.id is string &&
+             data.title is string &&
+             data.status is string &&
+             data.id.size() <= 128;
+    }
+
+    function isValidPreparationItem(data) {
+      return data.keys().hasAll(['id', 'title', 'done']) &&
+             data.id is string &&
+             data.title is string &&
+             data.done is bool &&
+             data.id.size() <= 128;
+    }
+
+    function isValidStrategyItem(data) {
+      return data.keys().hasAll(['id', 'title']) &&
+             data.id is string &&
+             data.title is string &&
+             data.id.size() <= 128;
+    }
+
+    function isValidSettings(data) {
+      return data.keys().hasAll(['exchangeRate', 'totalBudgetNTD', 'startDate']) &&
+             data.exchangeRate is number &&
+             data.totalBudgetNTD is number &&
+             data.startDate is string;
+    }
+
+    // Collection matches
+    match /itinerary/{itemId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(itemId) && isValidItineraryItem(incoming());
+      allow update: if isSignedIn() && isValidItineraryItem(incoming());
+      allow delete: if isSignedIn();
+    }
+
+    match /shopping/{itemId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(itemId) && isValidShoppingItem(incoming());
+      allow update: if isSignedIn() && isValidShoppingItem(incoming());
+      allow delete: if isSignedIn();
+    }
+
+    match /preparations/{itemId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(itemId) && isValidPreparationItem(incoming());
+      allow update: if isSignedIn() && isValidPreparationItem(incoming());
+      allow delete: if isSignedIn();
+    }
+
+    match /strategies/{itemId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(itemId) && isValidStrategyItem(incoming());
+      allow update: if isSignedIn() && isValidStrategyItem(incoming());
+      allow delete: if isSignedIn();
+    }
+
+    match /settings/{settingId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && (settingId == 'global' ? isValidSettings(incoming()) : false);
+    }
+  }
+}

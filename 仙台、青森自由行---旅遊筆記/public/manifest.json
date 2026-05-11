@@ -1,0 +1,17 @@
+{
+  "name": "仙台、青森自由行 - 旅遊筆記",
+  "short_name": "旅遊筆記",
+  "description": "行程規劃、花費、購物清單工具",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fffafc",
+  "theme_color": "#ec4899",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/201/201623.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
